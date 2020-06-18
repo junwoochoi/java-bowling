@@ -14,40 +14,40 @@ class FinalFrameTest {
     @Test
     @DisplayName("스트라이크이면 한번 더 던질 수 있다.")
     void testStrikeOneMoreChance() {
-        final FinalFrame finalFrame = FinalFrame.newInstance();
+        final FinalFrame finalFrame = FinalFrame.newInstanceByState();
 
         finalFrame.throwBowlingBall(10);
 
-        assertThat(finalFrame.isDone()).isFalse();
+        assertThat(finalFrame.isFinished()).isFalse();
     }
 
     @Test
     @DisplayName("스트라이크를 연속 세번 던질 수 있다.")
     void testThreeStrikeAvailable() {
-        final FinalFrame finalFrame = FinalFrame.newInstance();
+        final FinalFrame finalFrame = FinalFrame.newInstanceByState();
 
         finalFrame.throwBowlingBall(10);
         finalFrame.throwBowlingBall(10);
 
-        assertThat(finalFrame.isDone()).isFalse();
+        assertThat(finalFrame.isFinished()).isFalse();
     }
 
     @Test
     @DisplayName("스페어면 한번 더 던질 수 있다")
     void testSpareOneMoreChance() {
-        final FinalFrame finalFrame = FinalFrame.newInstance();
+        final FinalFrame finalFrame = FinalFrame.newInstanceByState();
 
         final int firstThrow = 3;
         finalFrame.throwBowlingBall(firstThrow);
         finalFrame.throwBowlingBall(Pins.MAX_NUMBER_OF_PINS - firstThrow);
 
-        assertThat(finalFrame.isDone()).isFalse();
+        assertThat(finalFrame.isFinished()).isFalse();
     }
 
     @Test
     @DisplayName("처음 스트라이크를 던진 후, 두번째 턴에는 거터, 이후 마지막턴에 스페어 처리가 가능하다")
     void testFirstStrikeAndGutterAndSpare() {
-        final FinalFrame finalFrame = FinalFrame.newInstance();
+        final FinalFrame finalFrame = FinalFrame.newInstanceByState();
         final int secondThrow = 4;
 
         finalFrame.throwBowlingBall(Pins.MAX_NUMBER_OF_PINS);
@@ -63,18 +63,18 @@ class FinalFrameTest {
     @Test
     @DisplayName("스페어나 스트라이크가 아니라면 세번 던질 수는 없다.")
     void testNoChanceIfNotSpareOrStrike() {
-        final FinalFrame finalFrame = FinalFrame.newInstance();
+        final FinalFrame finalFrame = FinalFrame.newInstanceByState();
 
         finalFrame.throwBowlingBall(3);
         finalFrame.throwBowlingBall(3);
 
-        assertThat(finalFrame.isDone()).isTrue();
+        assertThat(finalFrame.isFinished()).isTrue();
     }
 
     @Test
     @DisplayName("공을 던지면 공을 던진 이력이 남는다")
     void testHistory() {
-        final Frame finalFrame = FinalFrame.newInstance();
+        final Frame finalFrame = FinalFrame.newInstanceByState();
 
         finalFrame.throwBowlingBall(3);
 

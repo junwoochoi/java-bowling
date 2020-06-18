@@ -1,41 +1,23 @@
 package domain.frame.impl;
 
 import domain.frame.Frame;
-import domain.frame.Frames;
-
-import static domain.pin.Pins.ZERO;
+import domain.state.Ready;
+import domain.state.State;
 
 public class NormalFrame extends Frame {
-    private static final int MAX_THROW_COUNT = 2;
 
-    private NormalFrame(int frameNumber) {
-        if (frameNumber < ZERO || frameNumber > Frames.MAX_FRAME_COUNT) {
-            throw new IllegalArgumentException("생성된 프레임의 숫자가 유효하지 않습니다.");
-        }
-        this.frameNumber = frameNumber;
+    private NormalFrame(final State state, final int frameNumber) {
+        super(state, frameNumber);
     }
 
-    public static NormalFrame newInstanceByFrameNumber(int frameNumber) {
-        return new NormalFrame(frameNumber);
+    public static NormalFrame newInstanceByFrameNumber(final int frameNumber) {
+        return new NormalFrame(Ready.newInstance(), frameNumber);
     }
 
     @Override
-    public boolean isDone() {
-        if (this.pins.isAllDown()) {
-            return true;
-        }
-        return this.frameHistories.size() == MAX_THROW_COUNT;
+    public boolean isFinished() {
+        return this.state.isFinished();
     }
 
-    @Override
-    public void throwBowlingBall(int fallenPins) {
-        if (this.frameHistories.size() + 1 > MAX_THROW_COUNT) {
-            throw new IllegalArgumentException("you can only throw " + MAX_THROW_COUNT + " times in one frame");
-        }
-
-        this.pins.FellDown(fallenPins);
-
-        this.frameHistories.add(fallenPins);
-    }
 
 }

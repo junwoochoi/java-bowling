@@ -26,7 +26,7 @@ class PinsTest {
 
         assertThat(pins.isAllDown()).isFalse();
 
-        pins.FellDown(Pins.MAX_NUMBER_OF_PINS);
+        pins.fellDown(Pins.MAX_NUMBER_OF_PINS);
 
         assertThat(pins.isAllDown()).isTrue();
     }
@@ -37,7 +37,7 @@ class PinsTest {
     void testThrowBallAndLeftPins(int fallenPins) {
         final Pins pins = Pins.newInstance();
 
-        pins.FellDown(fallenPins);
+        pins.fellDown(fallenPins);
 
         assertThat(pins.leftPins()).isEqualTo(Pins.MAX_NUMBER_OF_PINS - fallenPins);
     }
@@ -49,7 +49,7 @@ class PinsTest {
         final Pins pins = Pins.newInstance();
 
         assertThrows(IllegalArgumentException.class, () ->
-                pins.FellDown(fallenPins));
+                pins.fellDown(fallenPins));
     }
 
     @Test
@@ -57,10 +57,10 @@ class PinsTest {
     void testValiationOfFallenPinsGreaterThanLeftPins() {
         final Pins pins = Pins.newInstance();
 
-        pins.FellDown(6);
+        pins.fellDown(6);
 
         assertThrows(IllegalArgumentException.class, () ->
-                pins.FellDown(pins.leftPins() + 1));
+                pins.fellDown(pins.leftPins() + 1));
     }
 
     @Test

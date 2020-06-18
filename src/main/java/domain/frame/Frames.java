@@ -1,27 +1,21 @@
 package domain.frame;
 
 
-import domain.frame.impl.FinalFrame;
 import domain.frame.impl.NormalFrame;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class Frames {
     public static final int MAX_FRAME_COUNT = 10;
+    public static final int MIN_FRAME_COUNT = 1;
     private final List<Frame> frames;
 
     private Frames() {
-        final List<Frame> frames = IntStream.rangeClosed(1, MAX_FRAME_COUNT - 1)
-                .mapToObj(NormalFrame::newInstanceByFrameNumber)
-                .collect(Collectors.toList());
-
-        frames.add(FinalFrame.newInstance());
-        this.frames = Collections.unmodifiableList(frames);
+        final List<Frame> frames = new ArrayList<>();
+        frames.add(NormalFrame.newInstanceByFrameNumber(MIN_FRAME_COUNT));
+        this.frames = frames;
     }
 
     public static Frames newInstance() {
@@ -29,16 +23,21 @@ public class Frames {
     }
 
     public boolean isEnd() {
-        return this.frames.stream()
-                .allMatch(Frame::isDone);
+        return (this.frames.size() == MAX_FRAME_COUNT) && this.frames.get(MAX_FRAME_COUNT - 1).isFinished();
     }
 
     public void throwBowlingBall(int inputFallenPins) {
-        final Frame proceedFrame = this.frames.stream()
-                .filter(Frame::isThrowOpportunityLeft)
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException("you can not throw more"));
-        proceedFrame.throwBowlingBall(inputFallenPins);
+        if (isEnd()) {
+            throw new IllegalArgumentException("더이상 던질 기회가 없습니다.");
+        }
+
+        final Frame lastThrownFrame = frames.get(frames.size() - 1);
+        if (lastThrownFrame.isThrowOpportunityLeft()) {
+            lastThrownFrame.throwBall(inputFallenPins);
+            return;
+        }
+
+        frames.add(NormalFrame.newInstanceByFrameNumber(inputFallenPins));
     }
 
     public List<Frame> getFrames() {

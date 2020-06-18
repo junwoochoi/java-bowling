@@ -1,31 +1,47 @@
 package domain.pin;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
 
 public class Pins {
     public static final int MAX_NUMBER_OF_PINS = 10;
     public static final int ZERO = 0;
 
-    private final List<Pin> pins = Stream.generate(Pin::newStandingPin)
-            .limit(MAX_NUMBER_OF_PINS)
-            .collect(Collectors.toList());
+    private final List<Pin> pins;
 
     private Pins() {
+        this.pins = Stream.generate(Pin::newStandingPin)
+                .limit(MAX_NUMBER_OF_PINS)
+                .collect(collectingAndThen(toList(), Collections::unmodifiableList));
     }
+
+    private Pins(List<Pin> pins) {
+        this.pins = Collections.unmodifiableList(new ArrayList<>(pins));
+    }
+
 
     public static Pins newInstance() {
         return new Pins();
     }
 
-    public void FellDown(int fallenPins) {
+
+    public Pins fellDown(int fallenPins) {
         validateFallenPins(fallenPins);
 
-        this.pins.stream()
-                .filter(Pin::isStanding)
-                .limit(fallenPins)
-                .forEach(Pin::fall);
+        final List<Pin> nextPins = Stream.concat(
+                Stream.generate(Pin::newStandingPin)
+                        .limit(MAX_NUMBER_OF_PINS - fallenPins),
+                Stream.generate(Pin::newFallenPin)
+                        .limit(fallenPins)
+        )
+                .collect(collectingAndThen(toList(), Collections::unmodifiableList));
+
+        return new Pins(nextPins);
     }
 
     private void validateFallenPins(int fallenPins) {

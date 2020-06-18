@@ -13,12 +13,12 @@ public class Pin {
         return new Pin(true);
     }
 
+    public static Pin newFallenPin() {
+        return new Pin(false);
+    }
+
 
     public boolean isStanding() {
         return isStanding;
-    }
-
-    public void fall() {
-        this.isStanding = false;
     }
 }

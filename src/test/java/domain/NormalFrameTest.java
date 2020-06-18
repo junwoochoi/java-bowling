@@ -45,7 +45,7 @@ class NormalFrameTest {
             normalFrame.throwBowlingBall(3);
         }
 
-        assertThat(normalFrame.isDone())
+        assertThat(normalFrame.isFinished())
                 .isEqualTo(isDone);
     }
 
@@ -69,7 +69,7 @@ class NormalFrameTest {
 
         normalFrame.throwBowlingBall(Pins.MAX_NUMBER_OF_PINS);
 
-        final boolean isDone = normalFrame.isDone();
+        final boolean isDone = normalFrame.isFinished();
 
         assertThat(isDone).isTrue();
     }
