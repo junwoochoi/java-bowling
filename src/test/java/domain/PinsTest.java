@@ -14,7 +14,7 @@ class PinsTest {
     @Test
     @DisplayName("Pins 객체 생성 테스트")
     void test() {
-        final Pins pins = Pins.newInstance();
+        final Pins pins = Pins.ALL_STANDING_PINS;
 
         assertThat(pins).isNotNull();
     }
@@ -22,7 +22,7 @@ class PinsTest {
     @Test
     @DisplayName("핀이 모두 쓰러지면 true 그렇지 않으면 false를 리턴한다.")
     void testIsAllDown() {
-        final Pins pins = Pins.newInstance();
+        final Pins pins = Pins.ALL_STANDING_PINS;
 
         assertThat(pins.isAllDown()).isFalse();
 
@@ -35,7 +35,7 @@ class PinsTest {
     @DisplayName("넘어질 핀의 값을 주면 해당 값만큼의 핀이 핀에서 줄어든다.")
     @ValueSource(ints = {0, 5, 10})
     void testThrowBallAndLeftPins(int fallenPins) {
-        final Pins pins = Pins.newInstance();
+        final Pins pins = Pins.ALL_STANDING_PINS;
 
         pins.fellDown(fallenPins);
 
@@ -46,7 +46,7 @@ class PinsTest {
     @DisplayName("넘어질 핀의 갯수는 음수이거나 NUMBER_OF_PINS를 넘어갈 수 없다")
     @ValueSource(ints = {-1, 15})
     void testValidationOfFallenPins(int fallenPins) {
-        final Pins pins = Pins.newInstance();
+        final Pins pins = Pins.ALL_STANDING_PINS;
 
         assertThrows(IllegalArgumentException.class, () ->
                 pins.fellDown(fallenPins));
@@ -55,7 +55,7 @@ class PinsTest {
     @Test
     @DisplayName("넘어질 핀이 남은 핀의 숫자를 넘어갈 수 없다")
     void testValiationOfFallenPinsGreaterThanLeftPins() {
-        final Pins pins = Pins.newInstance();
+        final Pins pins = Pins.ALL_STANDING_PINS;
 
         pins.fellDown(6);
 
@@ -66,7 +66,7 @@ class PinsTest {
     @Test
     @DisplayName("처음 객체 생성시 남은 핀의 숫자는 Pins.NUMBER_OF_PINS 이다")
     void testLeftPins() {
-        final Pins pins = Pins.newInstance();
+        final Pins pins = Pins.ALL_STANDING_PINS;
 
         assertThat(pins.leftPins()).isEqualTo(Pins.MAX_NUMBER_OF_PINS);
     }

@@ -4,7 +4,7 @@ import domain.pin.Pins;
 
 public class Ready implements State {
 
-    private final Pins pins = Pins.newInstance();
+    private final Pins pins = Pins.ALL_STANDING_PINS;
 
     public static Ready newInstance() {
         return new Ready();

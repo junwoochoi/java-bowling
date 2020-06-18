@@ -2,17 +2,27 @@ package domain.state;
 
 import domain.pin.Pins;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
 
 public class NormalState implements State {
 
-    private final Pins pins;
+    protected final List<Pins> fallenPinsHistory;
+    private final Pins leftPins;
 
     public NormalState(final Pins leftPins) {
         if (Objects.isNull(leftPins) || leftPins.isAllDown()) {
             throw new IllegalArgumentException("invalid pins");
         }
-        this.pins = leftPins;
+        this.fallenPinsHistory = Collections.unmodifiableList(
+                Collections.singletonList(leftPins)
+        );
+        this.leftPins = leftPins;
     }
 
     public static State byLeftPins(Pins leftPins) {
@@ -26,11 +36,14 @@ public class NormalState implements State {
 
     @Override
     public State throwBall(int inputFallenPins) {
-        final Pins nextPins = this.pins.fellDown(inputFallenPins);
+        final Pins nextLeftPins = this.leftPins.fellDown(inputFallenPins);
 
-        if (nextPins.isAllDown()) {
-            return Spare.newInstance(nextPins);
+        final List<Pins> nextHistory = Stream.concat(fallenPinsHistory.stream(), Stream.of(nextLeftPins))
+                .collect(collectingAndThen(toList(), Collections::unmodifiableList));
+
+        if (nextLeftPins.isAllDown()) {
+            return Spare.of(nextHistory);
         }
-        return Miss.newInstance();
+        return Miss.of(nextHistory);
     }
 }

@@ -2,14 +2,14 @@ package domain.state;
 
 import domain.pin.Pins;
 
-public class Spare extends FinishState {
-    private final Pins pins;
+import java.util.List;
 
-    private Spare(final Pins leftPins) {
-        this.pins = leftPins;
+public class Spare extends FinishState {
+    private Spare(final List<Pins> pinsHistory) {
+        super(pinsHistory);
     }
 
-    public static Spare newInstance(final Pins leftPins) {
-        return new Spare(leftPins);
+    public static State of(List<Pins> pinsHistory) {
+        return new Spare(pinsHistory);
     }
 }

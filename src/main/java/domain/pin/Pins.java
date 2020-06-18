@@ -11,6 +11,10 @@ import static java.util.stream.Collectors.toList;
 public class Pins {
     public static final int MAX_NUMBER_OF_PINS = 10;
     public static final int ZERO = 0;
+    public static final Pins ALL_DOWN_PINS = new Pins(Stream.generate(Pin::newFallenPin)
+            .limit(MAX_NUMBER_OF_PINS)
+            .collect(collectingAndThen(toList(), Collections::unmodifiableList)));
+    public static final Pins ALL_STANDING_PINS = new Pins();
 
     private final List<Pin> pins;
 
@@ -23,12 +27,6 @@ public class Pins {
     private Pins(List<Pin> pins) {
         this.pins = Collections.unmodifiableList(new ArrayList<>(pins));
     }
-
-
-    public static Pins newInstance() {
-        return new Pins();
-    }
-
 
     public Pins fellDown(int fallenPins) {
         validateFallenPins(fallenPins);
@@ -60,6 +58,10 @@ public class Pins {
         return (int) this.pins.stream()
                 .filter(Pin::isStanding)
                 .count();
+    }
+
+    public int fallenPins() {
+        return MAX_NUMBER_OF_PINS - leftPins();
     }
 
 

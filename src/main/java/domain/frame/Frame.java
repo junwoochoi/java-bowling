@@ -1,7 +1,10 @@
 package domain.frame;
 
+import domain.pin.Pins;
 import domain.state.State;
 import spark.utils.Assert;
+
+import java.util.List;
 
 import static domain.pin.Pins.ZERO;
 
@@ -30,5 +33,9 @@ public abstract class Frame {
 
     public void throwBall(int inputFallenPins) {
         this.state = this.state.throwBall(inputFallenPins);
+    }
+
+    public List<Integer> getFrameHistories() {
+        return this.state.getHitHistories();
     }
 }

@@ -26,10 +26,6 @@ public class BowlingPrintDto {
     }
 
     public int nextFrameCount() {
-        return frames.stream()
-                .filter(Frame::isThrowOpportunityLeft)
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("이미 종료된 게임 입니다."))
-                .getFrameNumber();
+        return this.frames.size();
     }
 }

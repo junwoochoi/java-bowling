@@ -1,6 +1,7 @@
 package domain.frame;
 
 
+import domain.frame.impl.FinalFrame;
 import domain.frame.impl.NormalFrame;
 
 import java.util.ArrayList;
@@ -37,7 +38,12 @@ public class Frames {
             return;
         }
 
-        frames.add(NormalFrame.newInstanceByFrameNumber(inputFallenPins));
+        final int nextFrameNumber = lastThrownFrame.getFrameNumber() + 1;
+
+        final Frame nextFrame = FrameFactory.createByFrameNumber(nextFrameNumber);
+        
+        nextFrame.throwBall(inputFallenPins);
+        frames.add(nextFrame);
     }
 
     public List<Frame> getFrames() {
