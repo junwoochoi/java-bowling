@@ -10,5 +10,5 @@ public interface State {
 
     State throwBall(int inputFallenPins);
 
-    List<Integer> getHitHistories();
+    List<Pins> getLeftPinsHistory();
 }

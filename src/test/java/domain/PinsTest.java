@@ -20,26 +20,30 @@ class PinsTest {
     }
 
     @Test
-    @DisplayName("핀이 모두 쓰러지면 true 그렇지 않으면 false를 리턴한다.")
-    void testIsAllDown() {
+    @DisplayName("ALL_STANDING_PINS은 핀이 모두 서있는 Pins를 리턴한다.")
+    void testAllStandingPins() {
         final Pins pins = Pins.ALL_STANDING_PINS;
 
         assertThat(pins.isAllDown()).isFalse();
+    }
 
-        pins.fellDown(Pins.MAX_NUMBER_OF_PINS);
+    @Test
+    @DisplayName("ALL_DOWN_PINS은 핀이 모두 넘어져있는 Pins를 리턴한다.")
+    void testAllDownPins() {
+        final Pins pins = Pins.ALL_DOWN_PINS;
 
         assertThat(pins.isAllDown()).isTrue();
     }
 
     @ParameterizedTest
-    @DisplayName("넘어질 핀의 값을 주면 해당 값만큼의 핀이 핀에서 줄어든다.")
+    @DisplayName("넘어질 핀의 값을 주면 해당 값만큼의 핀이 줄어든 Pins객체를 새롭게 리턴한다")
     @ValueSource(ints = {0, 5, 10})
     void testThrowBallAndLeftPins(int fallenPins) {
         final Pins pins = Pins.ALL_STANDING_PINS;
 
-        pins.fellDown(fallenPins);
+        final Pins fellDown = pins.fellDown(fallenPins);
 
-        assertThat(pins.leftPins()).isEqualTo(Pins.MAX_NUMBER_OF_PINS - fallenPins);
+        assertThat(fellDown.leftPins()).isEqualTo(Pins.MAX_NUMBER_OF_PINS - fallenPins);
     }
 
     @ParameterizedTest

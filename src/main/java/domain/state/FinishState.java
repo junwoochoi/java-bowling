@@ -8,14 +8,23 @@ import java.util.Collections;
 import java.util.List;
 
 public class FinishState implements State {
-    protected final List<Integer> hitHistories;
-    private Pins leftPins;
+    public static final int MAX_TURN_COUNT = 2;
+    protected Pins leftPins;
+    protected List<Pins> leftPinsHistory;
 
-    public FinishState(final List<Pins> fallPinsHistory) {
-        if (CollectionUtils.isEmpty(fallPinsHistory)) {
+    public FinishState(final List<Pins> leftPinsHistory) {
+        validateLeftPinsHistory(leftPinsHistory);
+        this.leftPins = leftPinsHistory.get(leftPinsHistory.size() - 1);
+        this.leftPinsHistory = Collections.unmodifiableList(new ArrayList<>(leftPinsHistory));
+    }
+
+    private void validateLeftPinsHistory(List<Pins> leftPinsHistory) {
+        if (CollectionUtils.isEmpty(leftPinsHistory)) {
             throw new IllegalArgumentException("pinsHistory can not be empty");
         }
-        this.fallPinsHistory = new ArrayList<>(fallPinsHistory);
+        if (leftPinsHistory.size() > MAX_TURN_COUNT) {
+            throw new IllegalArgumentException("leftPinsHistory size can not be greater than " + MAX_TURN_COUNT);
+        }
     }
 
     @Override
@@ -29,8 +38,9 @@ public class FinishState implements State {
     }
 
     @Override
-    public List<Integer> getHitHistories() {
-        return this.hitHistories;
+    public List<Pins> getLeftPinsHistory() {
+        return Collections.unmodifiableList(new ArrayList<>(leftPinsHistory));
     }
+
 
 }

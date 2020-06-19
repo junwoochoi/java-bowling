@@ -28,7 +28,7 @@ class NormalFrameTest {
     void testThrowBall() {
         final NormalFrame normalFrame = NormalFrame.newInstanceByFrameNumber(1);
 
-        normalFrame.throwBowlingBall(4);
+        normalFrame.throwBall(4);
 
         assertThat(normalFrame.getFrameHistories())
                 .hasSize(1)
@@ -42,7 +42,7 @@ class NormalFrameTest {
         final NormalFrame normalFrame = NormalFrame.newInstanceByFrameNumber(1);
 
         for (int i = 0; i < throwCount; i++) {
-            normalFrame.throwBowlingBall(3);
+            normalFrame.throwBall(3);
         }
 
         assertThat(normalFrame.isFinished())
@@ -55,11 +55,11 @@ class NormalFrameTest {
         final NormalFrame normalFrame = NormalFrame.newInstanceByFrameNumber(1);
 
         for (int i = 0; i < 2; i++) {
-            normalFrame.throwBowlingBall(2);
+            normalFrame.throwBall(2);
         }
 
         assertThrows(IllegalArgumentException.class, () ->
-                normalFrame.throwBowlingBall(2));
+                normalFrame.throwBall(2));
     }
 
     @Test
@@ -67,7 +67,7 @@ class NormalFrameTest {
     void testFirstStrikeEndTurn() {
         final NormalFrame normalFrame = NormalFrame.newInstanceByFrameNumber(1);
 
-        normalFrame.throwBowlingBall(Pins.MAX_NUMBER_OF_PINS);
+        normalFrame.throwBall(Pins.MAX_NUMBER_OF_PINS);
 
         final boolean isDone = normalFrame.isFinished();
 
@@ -82,7 +82,7 @@ class NormalFrameTest {
         final NormalFrame normalFrame = NormalFrame.newInstanceByFrameNumber(1);
 
         assertThrows(IllegalArgumentException.class, () ->
-                normalFrame.throwBowlingBall(fallenPins)
+                normalFrame.throwBall(fallenPins)
         );
     }
 
@@ -92,7 +92,7 @@ class NormalFrameTest {
     void testThrowBallSuccess(int fallenPins) {
         final NormalFrame normalFrame = NormalFrame.newInstanceByFrameNumber(1);
 
-        normalFrame.throwBowlingBall(fallenPins);
+        normalFrame.throwBall(fallenPins);
 
 
         final List<Integer> frameHistories = normalFrame.getFrameHistories();

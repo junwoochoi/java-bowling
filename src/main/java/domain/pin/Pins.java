@@ -33,7 +33,7 @@ public class Pins {
 
         final List<Pin> nextPins = Stream.concat(
                 Stream.generate(Pin::newStandingPin)
-                        .limit(MAX_NUMBER_OF_PINS - fallenPins),
+                        .limit(leftPins() - fallenPins),
                 Stream.generate(Pin::newFallenPin)
                         .limit(fallenPins)
         )
@@ -59,11 +59,6 @@ public class Pins {
                 .filter(Pin::isStanding)
                 .count();
     }
-
-    public int fallenPins() {
-        return MAX_NUMBER_OF_PINS - leftPins();
-    }
-
 
     public boolean isAllDown() {
         return leftPins() == ZERO;

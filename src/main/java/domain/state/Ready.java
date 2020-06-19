@@ -2,6 +2,9 @@ package domain.state;
 
 import domain.pin.Pins;
 
+import java.util.Collections;
+import java.util.List;
+
 public class Ready implements State {
 
     private final Pins pins = Pins.ALL_STANDING_PINS;
@@ -20,7 +23,6 @@ public class Ready implements State {
         if (isFinished()) {
             throw new IllegalArgumentException("can not throw more");
         }
-
         Pins leftPins = this.pins.fellDown(inputFallenPins);
 
         if (leftPins.isAllDown()) {
@@ -30,6 +32,10 @@ public class Ready implements State {
         return NormalState.byLeftPins(leftPins);
     }
 
+    @Override
+    public List<Pins> getLeftPinsHistory() {
+        return Collections.emptyList();
+    }
 
 
 }

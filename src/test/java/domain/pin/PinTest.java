@@ -8,23 +8,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PinTest {
 
     @Test
-    @DisplayName("Pin의 isStanding 기본 값은 true로 생성된다.")
-    void createTest() {
+    @DisplayName("Pin의 newStandingPin은 isStanding을 true로 리턴한다.")
+    void newStandingPinTest() {
         Pin pin = Pin.newStandingPin();
 
         assertThat(pin).isNotNull();
         assertThat(pin.isStanding()).isTrue();
     }
-
     @Test
-    @DisplayName("Pin 을 넘어뜨릴 수 있다")
-    void testFall() {
-        Pin pin = Pin.newStandingPin();
+    @DisplayName("Pin의 newFallenPin은 isStanding을 false로 리턴한다.")
+    void newFallenPinTest() {
+        Pin pin = Pin.newFallenPin();
 
-        assertThat(pin.isStanding()).isTrue();
-
-        pin.fall();
-
+        assertThat(pin).isNotNull();
         assertThat(pin.isStanding()).isFalse();
     }
+
+
+
 }

@@ -14,9 +14,9 @@ class FinalFrameTest {
     @Test
     @DisplayName("스트라이크이면 한번 더 던질 수 있다.")
     void testStrikeOneMoreChance() {
-        final FinalFrame finalFrame = FinalFrame.newInstanceByState();
+        final FinalFrame finalFrame = FinalFrame.newInstance();
 
-        finalFrame.throwBowlingBall(10);
+        finalFrame.throwBall(10);
 
         assertThat(finalFrame.isFinished()).isFalse();
     }
@@ -24,10 +24,10 @@ class FinalFrameTest {
     @Test
     @DisplayName("스트라이크를 연속 세번 던질 수 있다.")
     void testThreeStrikeAvailable() {
-        final FinalFrame finalFrame = FinalFrame.newInstanceByState();
+        final FinalFrame finalFrame = FinalFrame.newInstance();
 
-        finalFrame.throwBowlingBall(10);
-        finalFrame.throwBowlingBall(10);
+        finalFrame.throwBall(10);
+        finalFrame.throwBall(10);
 
         assertThat(finalFrame.isFinished()).isFalse();
     }
@@ -35,11 +35,11 @@ class FinalFrameTest {
     @Test
     @DisplayName("스페어면 한번 더 던질 수 있다")
     void testSpareOneMoreChance() {
-        final FinalFrame finalFrame = FinalFrame.newInstanceByState();
+        final FinalFrame finalFrame = FinalFrame.newInstance();
 
         final int firstThrow = 3;
-        finalFrame.throwBowlingBall(firstThrow);
-        finalFrame.throwBowlingBall(Pins.MAX_NUMBER_OF_PINS - firstThrow);
+        finalFrame.throwBall(firstThrow);
+        finalFrame.throwBall(Pins.MAX_NUMBER_OF_PINS - firstThrow);
 
         assertThat(finalFrame.isFinished()).isFalse();
     }
@@ -47,14 +47,14 @@ class FinalFrameTest {
     @Test
     @DisplayName("처음 스트라이크를 던진 후, 두번째 턴에는 거터, 이후 마지막턴에 스페어 처리가 가능하다")
     void testFirstStrikeAndGutterAndSpare() {
-        final FinalFrame finalFrame = FinalFrame.newInstanceByState();
+        final FinalFrame finalFrame = FinalFrame.newInstance();
         final int secondThrow = 4;
 
-        finalFrame.throwBowlingBall(Pins.MAX_NUMBER_OF_PINS);
-        finalFrame.throwBowlingBall(secondThrow);
+        finalFrame.throwBall(Pins.MAX_NUMBER_OF_PINS);
+        finalFrame.throwBall(secondThrow);
 
         Assertions.assertDoesNotThrow(() ->
-                finalFrame.throwBowlingBall(Pins.MAX_NUMBER_OF_PINS - secondThrow)
+                finalFrame.throwBall(Pins.MAX_NUMBER_OF_PINS - secondThrow)
         );
 
 
@@ -63,10 +63,10 @@ class FinalFrameTest {
     @Test
     @DisplayName("스페어나 스트라이크가 아니라면 세번 던질 수는 없다.")
     void testNoChanceIfNotSpareOrStrike() {
-        final FinalFrame finalFrame = FinalFrame.newInstanceByState();
+        final FinalFrame finalFrame = FinalFrame.newInstance();
 
-        finalFrame.throwBowlingBall(3);
-        finalFrame.throwBowlingBall(3);
+        finalFrame.throwBall(3);
+        finalFrame.throwBall(3);
 
         assertThat(finalFrame.isFinished()).isTrue();
     }
@@ -74,9 +74,9 @@ class FinalFrameTest {
     @Test
     @DisplayName("공을 던지면 공을 던진 이력이 남는다")
     void testHistory() {
-        final Frame finalFrame = FinalFrame.newInstanceByState();
+        final Frame finalFrame = FinalFrame.newInstance();
 
-        finalFrame.throwBowlingBall(3);
+        finalFrame.throwBall(3);
 
         assertThat(finalFrame.getFrameHistories()).hasSize(1)
                 .element(0).isEqualTo(3);
