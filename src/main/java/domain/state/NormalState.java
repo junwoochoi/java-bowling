@@ -11,7 +11,7 @@ public class NormalState implements State {
 
     private final Pins leftPins;
 
-    private NormalState(final Pins leftPins) {
+    protected NormalState(final Pins leftPins) {
         if (Objects.isNull(leftPins) || leftPins.isAllDown()) {
             throw new IllegalArgumentException("invalid pins");
         }
@@ -32,14 +32,20 @@ public class NormalState implements State {
         if (isFinished()) {
             throw new IllegalArgumentException("can not throw more");
         }
+
         final Pins nextLeftPins = this.leftPins.fellDown(inputFallenPins);
 
         final int firstFallenPins = Pins.MAX_NUMBER_OF_PINS - leftPins.leftPins();
         final List<Integer> nextHistory = Arrays.asList(firstFallenPins, inputFallenPins);
 
+        if (inputFallenPins == 0) {
+            return Gutter.ofSecond(firstFallenPins);
+        }
+
         if (nextLeftPins.isAllDown()) {
             return Spare.of(nextHistory);
         }
+
         return Miss.of(nextHistory);
     }
 

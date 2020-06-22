@@ -67,7 +67,7 @@ class FinalFrameTest {
 
         finalFrame.throwBall(3);
 
-        assertThat(finalFrame.getFrameHistories()).hasSize(1)
+        assertThat(finalFrame.getState()).hasSize(1)
                 .element(0).isEqualTo(3);
     }
 

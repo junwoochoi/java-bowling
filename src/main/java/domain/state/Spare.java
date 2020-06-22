@@ -1,7 +1,5 @@
 package domain.state;
 
-import domain.pin.Pins;
-
 import java.util.List;
 
 public class Spare extends FinishState {

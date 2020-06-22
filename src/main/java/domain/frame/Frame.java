@@ -36,7 +36,7 @@ public abstract class Frame {
         this.state = this.state.throwBall(inputFallenPins);
     }
 
-    public List<Integer> getFrameHistories() {
-        return Collections.unmodifiableList(new ArrayList<>(this.state.getFallenPinsHistory()));
+    public State getState() {
+        return this.state;
     }
 }

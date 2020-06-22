@@ -19,7 +19,7 @@ public class OutputView {
     public static final String BLANK = " ";
     public static final String DELIMITER = "|";
 
-    private final FrameHistoryParser frameHistoryParser = new FrameHistoryParser();
+    private final StateParser stateParser = new StateParser();
 
     public void printInputPlayerNameMessage() {
         System.out.println("플레이어 이름은(" + NAME_LENGTH + " english letters)?: ");
@@ -46,8 +46,8 @@ public class OutputView {
 
     private void printResult(Player player, List<Frame> frames) {
         final List<String> parsedFrames = frames.stream()
-                .map(Frame::getFrameHistories)
-                .map(frameHistoryParser::parse)
+                .map(Frame::getState)
+                .map(stateParser::parse)
                 .collect(toList());
 
         while (parsedFrames.size() != 10) {

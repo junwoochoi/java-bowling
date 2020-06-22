@@ -25,6 +25,10 @@ public class Ready implements State {
         }
         Pins leftPins = this.pins.fellDown(inputFallenPins);
 
+        if (inputFallenPins == 0) {
+            return Gutter.ofFirst();
+        }
+
         if (leftPins.isAllDown()) {
             return Strike.newInstance();
         }

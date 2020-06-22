@@ -30,7 +30,7 @@ class NormalFrameTest {
 
         normalFrame.throwBall(4);
 
-        assertThat(normalFrame.getFrameHistories())
+        assertThat(normalFrame.getState())
                 .hasSize(1)
                 .element(0).isEqualTo(4);
     }
@@ -95,7 +95,7 @@ class NormalFrameTest {
         normalFrame.throwBall(fallenPins);
 
 
-        final List<Integer> frameHistories = normalFrame.getFrameHistories();
+        final List<Integer> frameHistories = normalFrame.getState();
         final Integer lastHistory = frameHistories.get(frameHistories.size() - 1);
 
         assertThat(lastHistory).isEqualTo(fallenPins);

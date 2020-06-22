@@ -48,14 +48,10 @@ public class FinalFrame extends Frame {
     }
 
     @Override
-    public List<Integer> getFrameHistories() {
+    public State getState() {
         if (this.isBonusThrown) {
-            return Collections.unmodifiableList(
-                    Stream.of(this.state.getFallenPinsHistory(), this.bonusState.getFallenPinsHistory())
-                    .flatMap(Collection::stream)
-                    .collect(Collectors.toList())
-            );
+            return this.bonusState;
         }
-        return super.getFrameHistories();
+        return super.getState();
     }
 }
