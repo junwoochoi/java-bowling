@@ -53,13 +53,13 @@ class NormalStateTest {
     }
 
     @Test
-    @DisplayName("Normal State에서 leftPinsHistory는 사이즈가 1개이고, 본인의 남은 갯수가 들어있다")
+    @DisplayName("Normal State에서 leftPinsHistory는 사이즈가 1개이고, 처음 던져서 맞힌 갯수가 들어있다")
     void testHistory() {
         final State state = NormalState.byLeftPins(Pins.ALL_STANDING_PINS.fellDown(1));
 
-        final List<Pins> leftPinsHistory = state.getLeftPinsHistory();
+        final List<Integer> fallenPins = state.getFallenPinsHistory();
 
-        assertThat(leftPinsHistory).hasSize(1);
-        assertThat(leftPinsHistory.get(0).leftPins()).isEqualTo(9);
+        assertThat(fallenPins).hasSize(1);
+        assertThat(fallenPins.get(0)).isEqualTo(1);
     }
 }

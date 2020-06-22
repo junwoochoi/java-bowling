@@ -24,7 +24,7 @@ class NormalFrameTest {
     }
 
     @Test
-    @DisplayName("Frame에서 공을 던지면 던진 공의 기록이 남는다")
+    @DisplayName("Frame에서 공을 던지면 넘어진 핀의 기록이 남는다")
     void testThrowBall() {
         final NormalFrame normalFrame = NormalFrame.newInstanceByFrameNumber(1);
 

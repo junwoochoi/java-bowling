@@ -22,17 +22,6 @@ class FinalFrameTest {
     }
 
     @Test
-    @DisplayName("스트라이크를 연속 세번 던질 수 있다.")
-    void testThreeStrikeAvailable() {
-        final FinalFrame finalFrame = FinalFrame.newInstance();
-
-        finalFrame.throwBall(10);
-        finalFrame.throwBall(10);
-
-        assertThat(finalFrame.isFinished()).isFalse();
-    }
-
-    @Test
     @DisplayName("스페어면 한번 더 던질 수 있다")
     void testSpareOneMoreChance() {
         final FinalFrame finalFrame = FinalFrame.newInstance();

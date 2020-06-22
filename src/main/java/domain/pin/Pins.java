@@ -16,6 +16,9 @@ public class Pins {
             .collect(collectingAndThen(toList(), Collections::unmodifiableList)));
     public static final Pins ALL_STANDING_PINS = new Pins();
 
+    public static Pins byNumberOfStanding(int standingCount) {
+        return new Pins(standingCount);
+    }
     private final List<Pin> pins;
 
     private Pins() {
@@ -24,8 +27,23 @@ public class Pins {
                 .collect(collectingAndThen(toList(), Collections::unmodifiableList));
     }
 
+
     private Pins(List<Pin> pins) {
         this.pins = Collections.unmodifiableList(new ArrayList<>(pins));
+    }
+
+    private Pins(int standingCount) {
+        validateFallenPins(standingCount);
+
+        final List<Pin> nextPins = Stream.concat(
+                Stream.generate(Pin::newStandingPin)
+                        .limit(MAX_NUMBER_OF_PINS - standingCount),
+                Stream.generate(Pin::newFallenPin)
+                        .limit(standingCount)
+        )
+                .collect(collectingAndThen(toList(), Collections::unmodifiableList));
+
+        this.pins = Collections.unmodifiableList(new ArrayList<>(nextPins));
     }
 
     public Pins fellDown(int fallenPins) {

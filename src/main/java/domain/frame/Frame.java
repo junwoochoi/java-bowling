@@ -1,15 +1,13 @@
 package domain.frame;
 
-import domain.pin.Pins;
 import domain.state.State;
 import spark.utils.Assert;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static domain.pin.Pins.ZERO;
-import static java.util.stream.Collectors.collectingAndThen;
 
 public abstract class Frame {
     protected int frameNumber;
@@ -39,8 +37,6 @@ public abstract class Frame {
     }
 
     public List<Integer> getFrameHistories() {
-        return this.state.getLeftPinsHistory().stream()
-                .map(Pins::leftPins)
-                .collect(collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
+        return Collections.unmodifiableList(new ArrayList<>(this.state.getFallenPinsHistory()));
     }
 }

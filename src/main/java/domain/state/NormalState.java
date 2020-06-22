@@ -11,7 +11,7 @@ public class NormalState implements State {
 
     private final Pins leftPins;
 
-    public NormalState(final Pins leftPins) {
+    private NormalState(final Pins leftPins) {
         if (Objects.isNull(leftPins) || leftPins.isAllDown()) {
             throw new IllegalArgumentException("invalid pins");
         }
@@ -29,9 +29,12 @@ public class NormalState implements State {
 
     @Override
     public State throwBall(int inputFallenPins) {
+        if (isFinished()) {
+            throw new IllegalArgumentException("can not throw more");
+        }
         final Pins nextLeftPins = this.leftPins.fellDown(inputFallenPins);
 
-        final List<Pins> nextHistory = Arrays.asList(this.leftPins, nextLeftPins);
+        final List<Integer> nextHistory = Arrays.asList(Pins.MAX_NUMBER_OF_PINS - leftPins.leftPins(), inputFallenPins);
 
         if (nextLeftPins.isAllDown()) {
             return Spare.of(nextHistory);
@@ -40,7 +43,15 @@ public class NormalState implements State {
     }
 
     @Override
-    public List<Pins> getLeftPinsHistory() {
-        return Collections.unmodifiableList(Collections.singletonList(leftPins));
+    public List<Integer> getFallenPinsHistory() {
+        return Collections.unmodifiableList(Collections.singletonList(Pins.MAX_NUMBER_OF_PINS - leftPins.leftPins()));
+    }
+
+    @Override
+    public Pins getLeftPins() {
+        return this.getFallenPinsHistory().stream()
+                .reduce(Pins.ALL_STANDING_PINS, Pins::fellDown, (pins, pins2) -> {
+                    throw new IllegalArgumentException("multi thread not supported");
+                });
     }
 }

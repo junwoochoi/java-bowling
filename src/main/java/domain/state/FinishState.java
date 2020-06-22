@@ -10,15 +10,18 @@ import java.util.List;
 public class FinishState implements State {
     public static final int MAX_TURN_COUNT = 2;
     protected Pins leftPins;
-    protected List<Pins> leftPinsHistory;
+    protected List<Integer> fallenPinsHistory;
 
-    public FinishState(final List<Pins> leftPinsHistory) {
-        validateLeftPinsHistory(leftPinsHistory);
-        this.leftPins = leftPinsHistory.get(leftPinsHistory.size() - 1);
-        this.leftPinsHistory = Collections.unmodifiableList(new ArrayList<>(leftPinsHistory));
+    public FinishState(final List<Integer> fallenPinsHistory) {
+        validateFallenPinsHistory(fallenPinsHistory);
+        this.fallenPinsHistory = Collections.unmodifiableList(new ArrayList<>(fallenPinsHistory));
+        final int sumOfFallenPins = fallenPinsHistory.stream()
+                .mapToInt(Integer::intValue)
+                .sum();
+        this.leftPins = Pins.ALL_STANDING_PINS.fellDown(sumOfFallenPins);
     }
 
-    private void validateLeftPinsHistory(List<Pins> leftPinsHistory) {
+    private void validateFallenPinsHistory(List<Integer> leftPinsHistory) {
         if (CollectionUtils.isEmpty(leftPinsHistory)) {
             throw new IllegalArgumentException("pinsHistory can not be empty");
         }
@@ -38,8 +41,16 @@ public class FinishState implements State {
     }
 
     @Override
-    public List<Pins> getLeftPinsHistory() {
-        return Collections.unmodifiableList(new ArrayList<>(leftPinsHistory));
+    public List<Integer> getFallenPinsHistory() {
+        return Collections.unmodifiableList(new ArrayList<>(fallenPinsHistory));
+    }
+
+    @Override
+    public Pins getLeftPins() {
+        return this.getFallenPinsHistory().stream()
+                .reduce(Pins.ALL_STANDING_PINS, Pins::fellDown, (pins, pins2) -> {
+                    throw new IllegalArgumentException("multi thread not supported");
+                });
     }
 
 

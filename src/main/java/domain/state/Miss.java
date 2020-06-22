@@ -1,16 +1,14 @@
 package domain.state;
 
-import domain.pin.Pins;
-
 import java.util.List;
 
-public class Miss extends FinishState{
+public class Miss extends FinishState {
 
-    public Miss(List<Pins> pinsHistory) {
-        super(pinsHistory);
+    public Miss(List<Integer> fallenPinsHistory) {
+        super(fallenPinsHistory);
     }
 
-    public static State of(List<Pins> nextHistory) {
+    public static State of(List<Integer> nextHistory) {
         return new Miss(nextHistory);
     }
 }

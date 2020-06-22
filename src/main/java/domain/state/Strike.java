@@ -2,17 +2,13 @@ package domain.state;
 
 import domain.pin.Pins;
 
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.collectingAndThen;
-import static java.util.stream.Collectors.toList;
 
 public class Strike extends FinishState {
 
     private Strike() {
-        super(Stream.of(Pins.ALL_DOWN_PINS)
-                .collect(collectingAndThen(toList(), Collections::unmodifiableList)));
+        super(Collections.unmodifiableList(Arrays.asList(Pins.MAX_NUMBER_OF_PINS)));
     }
 
     public static Strike newInstance() {

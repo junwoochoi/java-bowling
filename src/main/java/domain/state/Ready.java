@@ -33,8 +33,13 @@ public class Ready implements State {
     }
 
     @Override
-    public List<Pins> getLeftPinsHistory() {
+    public List<Integer> getFallenPinsHistory() {
         return Collections.emptyList();
+    }
+
+    @Override
+    public Pins getLeftPins() {
+        return Pins.ALL_STANDING_PINS;
     }
 
 

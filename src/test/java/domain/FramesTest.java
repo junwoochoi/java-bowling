@@ -36,8 +36,8 @@ class FramesTest {
     void testIsEndTrue() {
         final Frames frames = Frames.newInstance();
 
-        // 마지막 프레임은 XXX 가 가능하므로 모든 프레임을 완료시키기 위해 +2 해준다.
-        for (int i = 0; i < Frames.MAX_FRAME_COUNT + 2; i++) {
+        // 마지막 프레임은 XX 가 가능하므로 모든 프레임을 완료시키기 위해 +1 해준다.
+        for (int i = 0; i < Frames.MAX_FRAME_COUNT + 1; i++) {
             frames.throwBowlingBall(Pins.MAX_NUMBER_OF_PINS);
         }
 

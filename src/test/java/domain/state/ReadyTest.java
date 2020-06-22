@@ -21,7 +21,7 @@ class ReadyTest {
     void testHistories() {
         final Ready ready = Ready.newInstance();
 
-        assertThat(ready.getLeftPinsHistory())
+        assertThat(ready.getFallenPinsHistory())
                 .isNotNull()
                 .isNullOrEmpty();
     }
