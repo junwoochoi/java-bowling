@@ -12,7 +12,7 @@ class HistoryMarkTest {
     @ParameterizedTest
     @CsvSource({"1,1", "5,5", "10,X", "0,-"})
     void testFindMark(int numberOfPins, String expectedMark) {
-        final String mark = HistoryMark.findMarkOrItSelf(numberOfPins);
+        final String mark = HistoryMark.findMarkOrItSelf(numberOfPins, frameHistories.size());
 
         assertThat(mark).isEqualTo(expectedMark);
     }

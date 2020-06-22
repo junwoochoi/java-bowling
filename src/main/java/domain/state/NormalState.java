@@ -34,7 +34,8 @@ public class NormalState implements State {
         }
         final Pins nextLeftPins = this.leftPins.fellDown(inputFallenPins);
 
-        final List<Integer> nextHistory = Arrays.asList(Pins.MAX_NUMBER_OF_PINS - leftPins.leftPins(), inputFallenPins);
+        final int firstFallenPins = Pins.MAX_NUMBER_OF_PINS - leftPins.leftPins();
+        final List<Integer> nextHistory = Arrays.asList(firstFallenPins, inputFallenPins);
 
         if (nextLeftPins.isAllDown()) {
             return Spare.of(nextHistory);

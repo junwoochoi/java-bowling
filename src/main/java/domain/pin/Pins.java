@@ -49,11 +49,12 @@ public class Pins {
     public Pins fellDown(int fallenPins) {
         validateFallenPins(fallenPins);
 
+        final int nextStandingPins = leftPins() - fallenPins;
         final List<Pin> nextPins = Stream.concat(
                 Stream.generate(Pin::newStandingPin)
-                        .limit(leftPins() - fallenPins),
+                        .limit(nextStandingPins),
                 Stream.generate(Pin::newFallenPin)
-                        .limit(fallenPins)
+                        .limit(MAX_NUMBER_OF_PINS-nextStandingPins)
         )
                 .collect(collectingAndThen(toList(), Collections::unmodifiableList));
 

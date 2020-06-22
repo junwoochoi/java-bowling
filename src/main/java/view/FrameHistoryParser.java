@@ -14,7 +14,7 @@ public class FrameHistoryParser {
         }
 
         final List<String> mappedHistories = frameHistories.stream()
-                .map(HistoryMark::findMarkOrItSelf)
+                .map(numberOfPins -> HistoryMark.findMarkOrItSelf(numberOfPins, frameHistories.size()))
                 .collect(Collectors.toList());
 
 
