@@ -26,6 +26,10 @@ public class BowlingPrintDto {
     }
 
     public int nextFrameCount() {
-        return this.frames.size();
+        final Frame lastFrame = this.frames.get(this.frames.size() - 1);
+        if (lastFrame.isThrowOpportunityLeft()) {
+            return lastFrame.getFrameNumber();
+        }
+        return lastFrame.getFrameNumber() + 1;
     }
 }

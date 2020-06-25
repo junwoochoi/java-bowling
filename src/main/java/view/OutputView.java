@@ -2,8 +2,10 @@ package view;
 
 import domain.frame.Frame;
 import domain.frame.Frames;
-import domain.player.Player;
+import domain.state.State;
+import utils.StringUtils;
 import view.dto.BowlingPrintDto;
+import view.dto.StateDto;
 
 import java.util.List;
 import java.util.Objects;
@@ -11,15 +13,13 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static domain.player.Player.NAME_LENGTH;
+import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
 public class OutputView {
-    public static final String THREE_SPACE = "   ";
-    public static final String NAME = "NAME";
-    public static final String BLANK = " ";
+    public static final String EMPTY_FORMAT = "     ";
     public static final String DELIMITER = "|";
-
-    private final StateParser stateParser = new StateParser();
+    public static final int FORMAT_SIZE = 5;
 
     public void printInputPlayerNameMessage() {
         System.out.println("플레이어 이름은(" + NAME_LENGTH + " english letters)?: ");
@@ -31,34 +31,42 @@ public class OutputView {
 
     public void printBowling(BowlingPrintDto dto) {
         printHeader();
-        printResult(dto.getPlayer(), dto.getFrames());
+        printResult(dto.getFrames());
     }
 
 
     private void printHeader() {
         final String header = IntStream.rangeClosed(Frames.MIN_FRAME_COUNT, Frames.MAX_FRAME_COUNT)
                 .mapToObj(Objects::toString)
-                .map(s -> BLANK + BLANK + s + BLANK + BLANK)
+                .map(s -> StringUtils.center(s, FORMAT_SIZE))
                 .collect(Collectors.joining(DELIMITER));
 
         System.out.println(header);
     }
 
-    private void printResult(Player player, List<Frame> frames) {
+    private void printResult(List<Frame> frames) {
         final List<String> parsedFrames = frames.stream()
-                .map(Frame::getState)
-                .map(stateParser::parse)
+                .map(Frame::getStates)
+                .map(this::mapToFormatStateString)
                 .collect(toList());
 
         while (parsedFrames.size() != 10) {
-            parsedFrames.add(THREE_SPACE);
+            parsedFrames.add(EMPTY_FORMAT);
         }
 
         final String result = IntStream.rangeClosed(Frames.MIN_FRAME_COUNT - 1, Frames.MAX_FRAME_COUNT - 1)
                 .mapToObj(parsedFrames::get)
-                .map(s -> BLANK + s + BLANK)
                 .collect(Collectors.joining(DELIMITER));
 
         System.out.println(result);
     }
+
+    private String mapToFormatStateString(List<State> states) {
+        final String stateString = states.stream()
+                .map(StateDto::new)
+                .map(StateDto::toFormatString)
+                .collect(joining(DELIMITER));
+        return StringUtils.center(stateString, FORMAT_SIZE);
+    }
+
 }

@@ -1,8 +1,8 @@
 package domain.frame.impl;
 
 import domain.frame.Frame;
-import domain.state.Ready;
 import domain.state.State;
+import domain.state.playing.Ready;
 
 public class NormalFrame extends Frame {
 
@@ -18,6 +18,4 @@ public class NormalFrame extends Frame {
     public boolean isFinished() {
         return this.state.isFinished();
     }
-
-
 }

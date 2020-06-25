@@ -1,13 +1,16 @@
-package domain.state;
+package domain.state.playing;
 
 import domain.pin.Pins;
-
-import java.util.Collections;
-import java.util.List;
+import domain.state.State;
+import domain.state.finish.Strike;
 
 public class Ready implements State {
 
     private final Pins pins = Pins.ALL_STANDING_PINS;
+
+    private Ready() {
+
+    }
 
     public static Ready newInstance() {
         return new Ready();
@@ -25,21 +28,24 @@ public class Ready implements State {
         }
         Pins leftPins = this.pins.fellDown(inputFallenPins);
 
-        if (inputFallenPins == 0) {
-            return Gutter.ofFirst();
-        }
 
         if (leftPins.isAllDown()) {
-            return Strike.newInstance();
+            return Strike.getInstance();
         }
 
-        return NormalState.byLeftPins(leftPins);
+        return NormalState.byFirstPins(leftPins);
     }
 
     @Override
-    public List<Integer> getFallenPinsHistory() {
-        return Collections.emptyList();
+    public Pins getFirstPins() {
+        throw new IllegalArgumentException("not valid request");
     }
+
+    @Override
+    public Pins getSecondPins() {
+        throw new IllegalArgumentException("not valid request");
+    }
+
 
     @Override
     public Pins getLeftPins() {

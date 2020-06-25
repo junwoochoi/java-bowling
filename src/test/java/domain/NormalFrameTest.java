@@ -23,17 +23,6 @@ class NormalFrameTest {
         assertThat(normalFrame).isNotNull();
     }
 
-    @Test
-    @DisplayName("Frame에서 공을 던지면 넘어진 핀의 기록이 남는다")
-    void testThrowBall() {
-        final NormalFrame normalFrame = NormalFrame.newInstanceByFrameNumber(1);
-
-        normalFrame.throwBall(4);
-
-        assertThat(normalFrame.getState())
-                .hasSize(1)
-                .element(0).isEqualTo(4);
-    }
 
     @ParameterizedTest
     @CsvSource({"1,false", "2,true"})
@@ -86,18 +75,4 @@ class NormalFrameTest {
         );
     }
 
-    @ParameterizedTest
-    @ValueSource(ints = {0, 6, 10})
-    @DisplayName("공을 던졌을 때, 넘어진 핀의 갯수에 대한 기록을 추가한다")
-    void testThrowBallSuccess(int fallenPins) {
-        final NormalFrame normalFrame = NormalFrame.newInstanceByFrameNumber(1);
-
-        normalFrame.throwBall(fallenPins);
-
-
-        final List<Integer> frameHistories = normalFrame.getState();
-        final Integer lastHistory = frameHistories.get(frameHistories.size() - 1);
-
-        assertThat(lastHistory).isEqualTo(fallenPins);
-    }
 }

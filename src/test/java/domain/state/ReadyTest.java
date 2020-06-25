@@ -1,6 +1,9 @@
 package domain.state;
 
 import domain.pin.Pins;
+import domain.state.finish.Strike;
+import domain.state.playing.NormalState;
+import domain.state.playing.Ready;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,15 +19,6 @@ class ReadyTest {
         assertThat(ready).isNotNull();
     }
 
-    @DisplayName("Ready 객체에서 기록을 리턴하면 비어있는 리스트를 리턴한다")
-    @Test
-    void testHistories() {
-        final Ready ready = Ready.newInstance();
-
-        assertThat(ready.getFallenPinsHistory())
-                .isNotNull()
-                .isNullOrEmpty();
-    }
 
     @DisplayName("Ready 객체에서 공을 던져 다 넘어뜨리면 Strike 객체를 리턴한다")
     @Test

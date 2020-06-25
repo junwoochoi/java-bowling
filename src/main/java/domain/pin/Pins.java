@@ -16,9 +16,10 @@ public class Pins {
             .collect(collectingAndThen(toList(), Collections::unmodifiableList)));
     public static final Pins ALL_STANDING_PINS = new Pins();
 
-    public static Pins byNumberOfStanding(int standingCount) {
-        return new Pins(standingCount);
+    public static Pins byNumberOfFallen(int fallenCount) {
+        return new Pins(MAX_NUMBER_OF_PINS - fallenCount);
     }
+
     private final List<Pin> pins;
 
     private Pins() {
@@ -36,9 +37,9 @@ public class Pins {
         validateFallenPins(standingCount);
 
         final List<Pin> nextPins = Stream.concat(
-                Stream.generate(Pin::newStandingPin)
-                        .limit(MAX_NUMBER_OF_PINS - standingCount),
                 Stream.generate(Pin::newFallenPin)
+                        .limit(MAX_NUMBER_OF_PINS - standingCount),
+                Stream.generate(Pin::newStandingPin)
                         .limit(standingCount)
         )
                 .collect(collectingAndThen(toList(), Collections::unmodifiableList));
@@ -48,13 +49,16 @@ public class Pins {
 
     public Pins fellDown(int fallenPins) {
         validateFallenPins(fallenPins);
+        if (leftPins() - fallenPins < ZERO) {
+            throw new IllegalArgumentException("left pins must be positive or zero");
+        }
 
         final int nextStandingPins = leftPins() - fallenPins;
         final List<Pin> nextPins = Stream.concat(
                 Stream.generate(Pin::newStandingPin)
                         .limit(nextStandingPins),
                 Stream.generate(Pin::newFallenPin)
-                        .limit(MAX_NUMBER_OF_PINS-nextStandingPins)
+                        .limit(MAX_NUMBER_OF_PINS - nextStandingPins)
         )
                 .collect(collectingAndThen(toList(), Collections::unmodifiableList));
 
@@ -68,15 +72,17 @@ public class Pins {
         if (fallenPins > MAX_NUMBER_OF_PINS) {
             throw new IllegalArgumentException("fallen pins max value is [" + MAX_NUMBER_OF_PINS + "]");
         }
-        if (leftPins() - fallenPins < ZERO) {
-            throw new IllegalArgumentException("left pins must be positive or zero");
-        }
+
     }
 
     public int leftPins() {
         return (int) this.pins.stream()
                 .filter(Pin::isStanding)
                 .count();
+    }
+
+    public int fallenPins() {
+        return MAX_NUMBER_OF_PINS - leftPins();
     }
 
     public boolean isAllDown() {

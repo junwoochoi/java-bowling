@@ -1,20 +1,17 @@
 package domain.frame.impl;
 
+import com.google.common.collect.Lists;
 import domain.frame.Frame;
 import domain.frame.Frames;
 import domain.pin.Pins;
-import domain.state.Ready;
 import domain.state.State;
+import domain.state.playing.Ready;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class FinalFrame extends Frame {
 
-    private State bonusState = Ready.newInstance();
+    private State bonusState;
     private boolean isBonusThrown = false;
 
     private FinalFrame(final State state) {
@@ -27,7 +24,6 @@ public class FinalFrame extends Frame {
 
     @Override
     public boolean isFinished() {
-        this.state.getLeftPins();
         if (this.state.isFinished() && this.state.getLeftPins().isAllDown()) {
             return this.isBonusThrown;
         }
@@ -39,7 +35,7 @@ public class FinalFrame extends Frame {
     public void throwBall(int inputFallenPins) {
         final Pins leftPinsInFirstState = this.state.getLeftPins();
         if (this.state.isFinished() && leftPinsInFirstState.isAllDown()) {
-            this.bonusState.throwBall(inputFallenPins);
+            this.bonusState = Ready.newInstance().throwBall(inputFallenPins);
             this.isBonusThrown = true;
             return;
         }
@@ -48,10 +44,10 @@ public class FinalFrame extends Frame {
     }
 
     @Override
-    public State getState() {
-        if (this.isBonusThrown) {
-            return this.bonusState;
+    public List<State> getStates() {
+        if (isBonusThrown) {
+            return Lists.newArrayList(state, bonusState);
         }
-        return super.getState();
+        return super.getStates();
     }
 }

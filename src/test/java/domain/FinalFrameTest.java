@@ -60,15 +60,5 @@ class FinalFrameTest {
         assertThat(finalFrame.isFinished()).isTrue();
     }
 
-    @Test
-    @DisplayName("공을 던지면 공을 던진 이력이 남는다")
-    void testHistory() {
-        final Frame finalFrame = FinalFrame.newInstance();
-
-        finalFrame.throwBall(3);
-
-        assertThat(finalFrame.getState()).hasSize(1)
-                .element(0).isEqualTo(3);
-    }
 
 }

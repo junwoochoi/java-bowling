@@ -3,7 +3,6 @@ package domain.frame;
 import domain.state.State;
 import spark.utils.Assert;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,7 +35,7 @@ public abstract class Frame {
         this.state = this.state.throwBall(inputFallenPins);
     }
 
-    public State getState() {
-        return this.state;
+    public List<State> getStates() {
+        return Collections.singletonList(this.state);
     }
 }
